@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Fractal Digital Hub | Strategic Branding & Web Design</title>
+  <meta name="description" content="Fractal Digital Hub — Digital identities, websites, and strategy for creators and businesses.">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="preload" href="videos/background.webm" as="video" type="video/webm">
+  <link rel="icon" href="images/demiacc-logo.webp" type="image/webp">
+  <link rel="stylesheet" href="css/partners.css">
+  <style>
+    :root { --black: #0e0e0e; --white: #ffffff; --magenta: #e6007e; }
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Space Grotesk', sans-serif; }
+    body { background-color: var(--black); color: var(--white); }
+    .bg-video-wrapper { position: fixed; inset: 0; z-index: -1; overflow: hidden; }
+    .bg-video-wrapper video { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .bg-video-wrapper .bg-vignette { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,0.35), rgba(0,0,0,0.6)); pointer-events: none; }
+    
+    /* Header & Navigation */
+    header { position: sticky; top: 0; display: flex; flex-direction: column; border-bottom: 1px solid #222; background: rgba(0,0,0,0.45); backdrop-filter: blur(8px); z-index: 50; }
+    .header-top { display: flex; justify-content: center; align-items: center; padding: 24px 50px; position: relative; }
+    .brand-name { display: flex; flex-direction: column; line-height: 1; text-align: center; }
+    .fractal { font-size: 24px; letter-spacing: 2px; font-weight: 700; }
+    .hub { font-size: 12px; letter-spacing: 3px; color: var(--magenta); margin-top: 5px; font-weight: 600; }
+    
+    /* Hamburger Menu */
+    .menu-toggle { position: absolute; right: 50px; display: none; flex-direction: column; gap: 5px; background: none; border: none; cursor: pointer; z-index: 51; transition: all .3s ease; }
+    .menu-line { width: 24px; height: 2px; background: var(--white); transition: all .3s cubic-bezier(0.34, 1.56, 0.64, 1); }
+    .menu-toggle.active .menu-line:nth-child(1) { transform: rotate(45deg) translate(10px, 10px); }
+    .menu-toggle.active .menu-line:nth-child(2) { opacity: 0; }
+    .menu-toggle.active .menu-line:nth-child(3) { transform: rotate(-45deg) translate(8px, -8px); }
+    
+    .nav-menu { display: flex; gap: 8px; align-items: center; justify-content: center; padding: 16px 50px; transition: all .3s ease; }
+    .nav-link { text-decoration: none; color: var(--white); font-size: 14px; padding: 10px 18px; transition: all .3s ease; border-bottom: 2px solid transparent; font-weight: 500; position: relative; }
+    .nav-link::after { content: ""; position: absolute; bottom: 0; left: 50%; width: 0; height: 2px; background: var(--magenta); transition: all .3s cubic-bezier(0.34, 1.56, 0.64, 1); transform: translateX(-50%); }
+    .nav-link:hover { color: var(--magenta); }
+    .nav-link:hover::after { width: calc(100% - 36px); }
+    .nav-link.cta { border: 1.5px solid var(--magenta); border-radius: 24px; background: rgba(230,0,126,0.05); padding: 10px 22px; transition: all .3s cubic-bezier(0.34, 1.56, 0.64, 1); }
+    .nav-link.cta:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(230,0,126,0.15); background: rgba(230,0,126,0.1); }
+    
+    .hero { min-height: 85vh; padding: 0 50px; display: flex; flex-direction: column; justify-content: center; align-items: center; max-width: 1400px; margin: 0 auto; text-align: center; }
+    .hero h1 { font-size: 56px; margin-bottom: 20px; animation: slideUpText .7s cubic-bezier(0.34, 1.56, 0.64, 1) 0s; }
+    @keyframes slideUpText { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: translateY(0); } }
+    .hero h1 span { color: var(--magenta); }
+    .hero-subtitle { max-width: 500px; opacity: 0.8; margin-bottom: 40px; animation: fadeInUp .7s cubic-bezier(0.34, 1.56, 0.64, 1) .15s both; font-size: 18px; line-height: 1.6; }
+    @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+    
+    .cta-btn { display: inline-block; border-radius: 28px; padding: 14px 30px; border: 1px solid var(--magenta); color: #000; background: var(--magenta); box-shadow: 0 6px 18px rgba(230,0,126,0.14); text-decoration: none; font-weight: 600; transition: all .3s cubic-bezier(0.34, 1.56, 0.64, 1); animation: popIn .7s cubic-bezier(0.34, 1.56, 0.64, 1) .3s both; position: relative; overflow: hidden; }
+    @keyframes popIn { from { opacity: 0; transform: scale(0.85) translateY(20px); } to { opacity: 1; transform: scale(1) translateY(0); } }
+    .cta-btn:hover { transform: translateY(-6px) scale(1.02); box-shadow: 0 12px 40px rgba(230,0,126,0.25); }
+    
+    .hero-ctas { display: flex; gap: 16px; justify-content: center; animation: fadeInUp .7s cubic-bezier(0.34, 1.56, 0.64, 1) .4s both; }
+
+    section { padding: 100px 50px; max-width: 1400px; margin: 0 auto; }
+    .why-us h2, .services h2, .featured-work h2, .process-section h2, .team-section h2 { text-align: center; margin-bottom: 60px; font-size: 42px; animation: fadeInDown .6s ease-out; }
+    @keyframes fadeInDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* Why Grid */
+    .why-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 40px; }
+    .why-card { background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 40px 32px; text-align: center; transition: all .4s cubic-bezier(0.34, 1.56, 0.64, 1); opacity: 0; animation: scaleInUp .6s ease-out forwards; }
+    @keyframes scaleInUp { from { opacity: 0; transform: scale(0.9) translateY(30px); } to { opacity: 1; transform: scale(1) translateY(0); } }
+    .why-number { font-size: 64px; font-weight: 700; color: var(--white); margin-bottom: 16px; width: 120px; height: 120px; display: flex; align-items: center; justify-content: center; margin-left: auto; margin-right: auto; border-radius: 50%; background: linear-gradient(135deg, var(--magenta) 0%, rgba(230,0,126,0.7) 100%); box-shadow: 0 0 40px rgba(230,0,126,0.4); }
+    .why-card:hover { border-color: var(--magenta); transform: translateY(-12px); background: rgba(0,0,0,0.55); }
+
+    /* Services Grid */
+    .services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 30px; }
+    .service-card { background: rgba(0,0,0,0.55); border: 1px solid rgba(255,255,255,0.08); backdrop-filter: blur(8px); padding: 36px 32px; border-radius: 12px; transition: all .4s cubic-bezier(0.34, 1.56, 0.64, 1); opacity: 0; animation: scaleInUp .6s ease-out forwards; text-align: center; }
+    .service-icon { font-size: 40px; margin-bottom: 24px; display: flex; align-items: center; justify-content: center; width: 100px; height: 100px; margin-left: auto; margin-right: auto; border-radius: 50%; background: rgba(230,0,126,0.1); border: 2px solid rgba(230,0,126,0.3); }
+    .service-link { display: inline-block; color: var(--magenta); text-decoration: none; font-size: 14px; font-weight: 600; margin-top: 12px; }
+
+    /* Featured Work */
+    .featured-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 40px; }
+    .featured-card { border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; overflow: hidden; text-decoration: none; color: var(--white); transition: all .4s cubic-bezier(0.34, 1.56, 0.64, 1); opacity: 0; animation: scaleInUp .6s ease-out forwards; text-align: center; }
+    .featured-image { height: 200px; background: rgba(230,0,126,0.05); display: flex; align-items: center; justify-content: center; }
+    .featured-info { padding: 30px 24px; }
+    .featured-type { color: var(--magenta); font-size: 13px; font-weight: 600; margin-bottom: 12px; display: block; }
+    .featured-card:hover { border-color: var(--magenta); transform: translateY(-8px); background: rgba(230,0,126,0.02); }
+
+    /* Process Grid */
+    .process-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 30px; }
+    .process-step { background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 40px 24px; text-align: center; transition: all .4s cubic-bezier(0.34, 1.56, 0.64, 1); opacity: 0; animation: scaleInUp .6s ease-out forwards; }
+    .step-number { font-size: 48px; font-weight: 700; margin-bottom: 20px; width: 100px; height: 100px; display: flex; align-items: center; justify-content: center; margin-left: auto; margin-right: auto; border-radius: 50%; background: linear-gradient(135deg, var(--magenta) 0%, rgba(230,0,126,0.8) 100%); }
+
+    /* Team Grid */
+    .team-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; }
+    .team-card { background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.08); border-radius: 16px; overflow: hidden; transition: all .4s cubic-bezier(0.34, 1.56, 0.64, 1); opacity: 0; animation: scaleInUp .6s ease-out forwards; text-align: center; }
+    .team-card img { width: 100%; height: 280px; object-fit: cover; }
+    .role { color: var(--magenta); font-size: 13px; font-weight: 600; margin: 8px 0 16px; letter-spacing: 1px; display: block; }
+
+    /* Footer */
+    .site-footer { text-align: center; padding: 40px 50px; border-top: 1px solid rgba(255,255,255,0.08); }
+    .lang-switcher a { color: var(--white); text-decoration: none; margin: 0 10px; opacity: 0.6; }
+    .lang-switcher a.active { opacity: 1; color: var(--magenta); font-weight: bold; }
+
+    @media (max-width: 768px) {
+      .why-grid, .process-grid, .featured-grid, .team-grid { grid-template-columns: 1fr; }
+      .hero h1 { font-size: 38px; }
+      .nav-menu { display: none; } /* Add your mobile JS toggle logic here */
+    }
+  </style>
+</head>
+<body>
+
+<div class="bg-video-wrapper">
+  <video autoplay muted loop playsinline>
+    <source src="videos/background.webm" type="video/webm">
+    <source src="videos/background.mp4" type="video/mp4">
+  </video>
+  <div class="bg-vignette"></div>
+</div>
+
+<header>
+  <div class="header-top">
+    <div class="brand-name">
+      <span class="fractal">FRACTAL</span>
+      <span class="hub">DIGITAL HUB</span>
+    </div>
+  </div>
+   
+  <nav class="nav-menu">
+    <a href="index-en.html" class="nav-link">Home</a>
+    <a href="pages/services-en.html" class="nav-link">Services</a>
+    <a href="pages/portfolio-en.html" class="nav-link">Portfolio</a>
+    <a href="pages/contact-en.html" class="nav-link cta">Contact</a>
+  </nav>
+</header>
+
+<section class="hero">
+  <div class="hero-content">
+    <h1>Building <span>Digital Authority.</span><br>For Brands with Vision and Ambition.</h1>
+    <p class="hero-subtitle">To stand out online, presence isn't enough. You need strategy, bold design, and technology that delivers. We bring it all together.</p>
+    <div class="hero-ctas">
+      <a href="pages/contact-en.html" class="cta-btn">Start Your Project</a>
+      <a href="pages/portfolio-en.html" class="cta-btn" style="background:transparent; color:white;">View Our Work</a>
+    </div>
+  </div>
+</section>
+
+<section class="why-us">
+  <h2>Why Fractal Digital Hub</h2>
+  <div class="why-grid">
+    <div class="why-card" style="animation-delay: .1s;">
+      <div class="why-number">1</div>
+      <h3>Strategy First</h3>
+      <p>We don't start with design. We start with goals and market analysis to build a clear roadmap for action.</p>
+    </div>
+    <div class="why-card" style="animation-delay: .2s;">
+      <div class="why-number">2</div>
+      <h3>Full-Service Solutions</h3>
+      <p>Web, Marketing, Branding, and Business Strategy. Everything designed to work in perfect harmony.</p>
+    </div>
+    <div class="why-card" style="animation-delay: .3s;">
+      <div class="why-number">3</div>
+      <h3>Human Collaboration</h3>
+      <p>Direct communication with the team working for you. No middlemen, no delays, just results.</p>
+    </div>
+    <div class="why-card" style="animation-delay: .4s;">
+      <div class="why-number">4</div>
+      <h3>Measurable Results</h3>
+      <p>We focus on what matters: ROI, conversions, and real growth. No vanity metrics allowed.</p>
+    </div>
+  </div>
+</section>
+
+<section class="services">
+  <h2>Our Services</h2>
+  <div class="services-grid">
+    <div class="service-card" style="animation-delay: .1s;">
+      <div class="service-icon">💻</div>
+      <h3>Website Development</h3>
+      <p>Fast, well-designed, and responsive websites optimized for SEO and conversion growth.</p>
+      <a href="pages/services-en.html" class="service-link">Learn More →</a>
+    </div>
+    <div class="service-card" style="animation-delay: .2s;">
+      <div class="service-icon">📊</div>
+      <h3>Marketing & Growth</h3>
+      <p>Targeted campaigns and content strategy based on hard data, not guesses.</p>
+      <a href="pages/services-en.html" class="service-link">Learn More →</a>
+    </div>
+    <div class="service-card" style="animation-delay: .3s;">
+      <div class="service-icon">🎨</div>
+      <h3>Branding & Design</h3>
+      <p>Logo, visual identity, and brand guidelines that capture your unique character.</p>
+      <a href="pages/services-en.html" class="service-link">Learn More →</a>
+    </div>
+    <div class="service-card" style="animation-delay: .4s;">
+      <div class="service-icon">🧾</div>
+      <h3>Business Services</h3>
+      <p>Financial strategy and accounting support to power your business growth.</p>
+      <a href="pages/services-en.html" class="service-link">Learn More →</a>
+    </div>
+  </div>
+</section>
+
+
+<section id="partners">
+  <div class="container-fluid content-layer">
+    
+    <div class="partners_header_wrapper text-center">
+      <p class="hub-tag">STRATEGIC ALLIANCES</p>
+      <h2 class="section-title">Elevating Brands with <span>Our Partners</span></h2>
+      <div class="title-separator"></div>
+    </div>
+
+    <div class="partners_grid">
+      
+      <a href="https://demiacc.gr/" target="_blank" class="partner-item">
+        <div class="partner-box glass large">
+          <img src="images/demi.jpg" alt="Demi Accounting">
+        </div>
+        <div class="partner-text-container">
+          <span class="partner-name">Demi Accounting</span>
+          <span class="case-study-link">Explore Case Study →</span>
+        </div>
+      </a>
+
+      <a href="https://b2gift.gr/collections/" target="_blank" class="partner-item">
+        <div class="partner-box glass large">
+          <img src="images/b2gift.jpg" alt="B2Gift">
+        </div>
+        <div class="partner-text-container">
+          <span class="partner-name">B2Gift</span>
+          <span class="case-study-link">Explore Case Study →</span>
+        </div>
+      </a>
+
+    </div>
+  </div>
+</section>
+
+<section class="process-section">
+  <h2>How We Work</h2>
+  <div class="process-grid">
+    <div class="process-step" style="animation-delay: .1s;">
+      <div class="step-number">1</div>
+      <h3>Discover</h3>
+      <p>We analyze your market and goals to define clear KPIs.</p>
+    </div>
+    <div class="process-step" style="animation-delay: .2s;">
+      <div class="step-number">2</div>
+      <h3>Strategy</h3>
+      <p>We build a timeline with measurable objectives.</p>
+    </div>
+    <div class="process-step" style="animation-delay: .3s;">
+      <div class="step-number">3</div>
+      <h3>Build</h3>
+      <p>Iterative UI/UX design and development with constant feedback.</p>
+    </div>
+    <div class="process-step" style="animation-delay: .4s;">
+      <div class="step-number">4</div>
+      <h3>Scale</h3>
+      <p>Continuous optimization and growth tactics post-launch.</p>
+    </div>
+  </div>
+</section>
+
+<section class="team-section">
+  <h2>Our Team</h2>
+  <div class="team-grid">
+    <div class="team-card" style="animation-delay: .1s;">
+      <img src="images/nikos.webp" alt="Nikos Simos">
+      <h3>Nikos Simos</h3>
+      <span class="role">Finance Strategy & Accounting</span>
+      <p style="padding: 0 20px 20px;">Focuses on sustainability, cash flow, and business growth.</p>
+    </div>
+    <div class="team-card" style="animation-delay: .2s;">
+      <img src="images/eirini.webp.jpg" alt="Eirini Brekoulaki">
+      <h3>Eirini Brekoulaki</h3>
+      <span class="role">Marketing & UX/UI</span>
+      <p style="padding: 0 20px 20px;">Optimizes user experience for high conversion rates.</p>
+    </div>
+    <div class="team-card" style="animation-delay: .3s;">
+      <img src="images/antonis.webp.jpg" alt="Antonis Georgiou">
+      <h3>Antonis Georgiou</h3>
+      <span class="role">Web Development & Copywriting</span>
+      <p style="padding: 0 20px 20px;">Turns strategy into functional, high-performance websites.</p>
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <p>© 2025 Fractal Digital Hub</p>
+  <div id="lang-switcher" class="lang-switcher" style="margin-top: 20px;">
+    <a href="index.html">Ελληνικά</a> | <a href="index-en.html" class="active">English</a>
+  </div>
+</footer>
+
+<script>
+  // Language switcher script that handles folder depth correctly
+  (function(){
+    const switcher = document.getElementById('lang-switcher');
+    if(!switcher) return;
+    const path = window.location.pathname;
+    const isEn = path.includes('-en.html');
+    
+    // Logic to find the current page name regardless of depth
+    const fileName = path.split('/').pop() || 'index.html';
+    let greekHref, engHref;
+
+    if(isEn) {
+        engHref = fileName;
+        greekHref = fileName.replace('-en.html', '.html');
+    } else {
+        greekHref = fileName;
+        engHref = fileName.replace('.html', '-en.html');
+    }
+    
+    switcher.innerHTML = `<a href="${greekHref}">Ελληνικά</a> | <a href="${engHref}" class="active">English</a>`;
+  })();
+</script>
+
+</body>
+</html>
