@@ -1,0 +1,208 @@
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Services | Fractal Digital Hub</title>
+  <meta name="description" content="Services: Website Development, Marketing & Ads, Business Strategy for your digital growth.">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="preload" href="../videos/background.webm" as="video" type="video/webm">
+  <meta property="og:title" content="Services | Fractal Digital Hub">
+  <meta property="og:description" content="Integrated digital solutions: website development, marketing, business strategy.">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="../images/b2gift-logo.webp">
+  <link rel="icon" href="../images/b2gift-logo.webp" type="image/webp">
+  
+  <style>
+    :root { --black: #0e0e0e; --white: #ffffff; --magenta: #e6007e; }
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Space Grotesk', sans-serif; }
+    body { background-color: var(--black); color: var(--white); }
+    .bg-video-wrapper { position: fixed; inset: 0; z-index: -1; overflow: hidden; }
+    .bg-video-wrapper video { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .bg-video-wrapper .bg-vignette { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,0.35), rgba(0,0,0,0.6)); pointer-events: none; }
+    
+    header { position: sticky; top: 0; display: flex; flex-direction: column; border-bottom: 1px solid #222; background: rgba(0,0,0,0.45); backdrop-filter: blur(8px); z-index: 50; }
+    .header-top { display: flex; justify-content: center; align-items: center; padding: 24px 50px; position: relative; }
+    .brand-name { display: flex; flex-direction: column; line-height: 1; text-align: center; }
+    .fractal { font-size: 24px; letter-spacing: 2px; font-weight: 700; }
+    .hub { font-size: 12px; letter-spacing: 3px; color: var(--magenta); margin-top: 5px; font-weight: 600; }
+    
+    .menu-toggle { position: absolute; right: 50px; display: none; flex-direction: column; gap: 5px; background: none; border: none; cursor: pointer; z-index: 51; transition: all .3s ease; }
+    .menu-line { width: 24px; height: 2px; background: var(--white); transition: all .3s cubic-bezier(0.34, 1.56, 0.64, 1); }
+    .menu-toggle.active .menu-line:nth-child(1) { transform: rotate(45deg) translate(10px, 10px); }
+    .menu-toggle.active .menu-line:nth-child(2) { opacity: 0; }
+    .menu-toggle.active .menu-line:nth-child(3) { transform: rotate(-45deg) translate(8px, -8px); }
+    
+    .nav-menu { display: flex; gap: 8px; align-items: center; justify-content: center; padding: 16px 50px; transition: all .3s ease; }
+    .nav-link { text-decoration: none; color: var(--white); font-size: 14px; padding: 10px 18px; transition: all .3s ease; border-bottom: 2px solid transparent; font-weight: 500; position: relative; }
+    .nav-link::after { content: ""; position: absolute; bottom: 0; left: 50%; width: 0; height: 2px; background: var(--magenta); transition: all .3s cubic-bezier(0.34, 1.56, 0.64, 1); transform: translateX(-50%); }
+    .nav-link:hover { color: var(--magenta); }
+    .nav-link:hover::after { width: calc(100% - 36px); }
+    .nav-link.cta { border: 1.5px solid var(--magenta); border-radius: 24px; background: rgba(230,0,126,0.05); padding: 10px 22px; transition: all .3s cubic-bezier(0.34, 1.56, 0.64, 1); }
+    .nav-link.cta:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(230,0,126,0.15); background: rgba(230,0,126,0.1); }
+    
+    section { padding: 100px 50px; max-width: 1400px; margin: 0 auto; }
+    
+    .page-header { text-align: center; padding-top: 120px; padding-bottom: 40px; }
+    .page-header h1 { font-size: 56px; margin-bottom: 16px; animation: fadeInDown .6s ease-out; }
+    .page-header p { font-size: 18px; opacity: 0.8; max-width: 600px; margin: 0 auto; animation: fadeInUp .7s ease-out .15s both; }
+    
+    .services { text-align: center; padding-top: 40px; }
+    .services h2 { font-size: 48px; margin-bottom: 60px; animation: fadeInDown .6s ease-out; }
+    .services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 40px; }
+    
+    .service-card { background: rgba(0,0,0,0.55); border: 1px solid rgba(255,255,255,0.08); backdrop-filter: blur(8px); padding: 48px 40px; border-radius: 12px; transition: all .4s cubic-bezier(0.34, 1.56, 0.64, 1); text-align: left; opacity: 0; animation: scaleInUp .6s ease-out forwards; }
+    .service-card:nth-child(1) { animation-delay: .1s; }
+    .service-card:nth-child(2) { animation-delay: .2s; }
+    .service-card:nth-child(3) { animation-delay: .3s; }
+    .service-card:nth-child(4) { animation-delay: .4s; }
+    @keyframes scaleInUp { from { opacity: 0; transform: scale(0.9) translateY(30px); } to { opacity: 1; transform: scale(1) translateY(0); } }
+    @keyframes fadeInDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    
+    .service-card h3 { font-size: 24px; margin-bottom: 16px; color: var(--magenta); }
+    .service-card p { font-size: 15px; opacity: 0.8; line-height: 1.6; margin-bottom: 24px; }
+    .service-features { display: flex; flex-direction: column; gap: 12px; }
+    .feature { font-size: 13px; padding-left: 24px; position: relative; opacity: 0.75; }
+    .feature::before { content: "→"; position: absolute; left: 0; color: var(--magenta); font-weight: 600; }
+    
+    .service-card:hover { border-color: var(--magenta); transform: translateY(-12px); box-shadow: 0 16px 40px rgba(230,0,126,0.12); background: rgba(0,0,0,0.65); }
+    
+    .skip-link { position: absolute; left: 12px; top: 12px; padding: 8px 12px; background: #000; color: var(--white); border: 1px solid rgba(255,255,255,0.06); transform: translateY(-120%); transition: transform .3s cubic-bezier(0.34, 1.56, 0.64, 1); z-index: 999; }
+    .skip-link:focus { transform: translateY(0); }
+    
+    .site-footer { background: #000; border-top: 1px solid #222; padding: 40px 50px; text-align: center; color: rgba(255,255,255,0.6); font-size: 14px; }
+    
+    @media (max-width: 768px) { 
+      .menu-toggle { display: flex; right: 24px; }
+      .nav-menu { position: fixed; top: 65px; left: 0; right: 0; flex-direction: column; background: rgba(0,0,0,0.95); padding: 20px; max-height: 0; overflow: hidden; transition: all .35s; }
+      .nav-menu.active { max-height: 360px; }
+      .page-header h1 { font-size: 36px; }
+      .services-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+  
+  <link rel="stylesheet" href="../css/style.css" media="print" onload="this.media='all'">
+</head>
+<body>
+
+  <a class="skip-link" href="#main">Skip to content</a>
+
+<div class="bg-video-wrapper">
+  <video id="bg-video" autoplay muted loop playsinline>
+    <source src="../videos/background.webm" type="video/webm">
+    <source src="../videos/background.mp4" type="video/mp4">
+  </video>
+  <div class="bg-vignette"></div>
+</div>
+
+<header>
+  <div class="header-top">
+    <div class="brand-name">
+      <span class="fractal">FRACTAL</span>
+      <span class="hub">DIGITAL HUB</span>
+    </div>
+    <button class="menu-toggle" id="menu-toggle" aria-label="Toggle menu" aria-expanded="false">
+      <span class="menu-line"></span>
+      <span class="menu-line"></span>
+      <span class="menu-line"></span>
+    </button>
+  </div>
+  
+  <nav class="nav-menu" id="nav-menu">
+    <a href="../index-en.html" class="nav-link">Home</a>
+    <a href="services-en.html" aria-current="page" class="nav-link">Services</a>
+    <a href="portfolio-en.html" class="nav-link">Portfolio</a>
+    <a href="contact-en.html" class="nav-link cta">Contact</a>
+  </nav>
+</header>
+
+<main id="main">
+  <div class="page-header">
+    <h1>Services</h1>
+    <p>Integrated digital solutions tailored to your business needs</p>
+  </div>
+  
+  <section class="services">
+    <div class="services-grid">
+      <div class="service-card">
+        <h3>💻 Website Development</h3>
+        <p>We build functional websites that turn visitors into loyal customers.</p>
+        <div class="service-features">
+          <div class="feature">Responsive design for all devices</div>
+          <div class="feature">Fast loading speeds and SEO optimization</div>
+          <div class="feature">Security and long-term scalability</div>
+          <div class="feature">Analytics and conversion tracking</div>
+        </div>
+      </div>
+      <div class="service-card">
+        <h3>📊 Marketing & Growth</h3>
+        <p>Targeted exposure driven by data and measurable strategy.</p>
+        <div class="service-features">
+          <div class="feature">Google Ads and Facebook targeted campaigns</div>
+          <div class="feature">Automated email marketing systems</div>
+          <div class="feature">Content strategy and keyword SEO</div>
+          <div class="feature">Performance tracking and ROI optimization</div>
+        </div>
+      </div>
+      <div class="service-card">
+        <h3>🎯 Business Strategy</h3>
+        <p>Strategic planning for sustainable and targeted growth.</p>
+        <div class="service-features">
+          <div class="feature">Market and competitor analysis</div>
+          <div class="feature">Brand positioning and core messaging</div>
+          <div class="feature">Digital roadmap development</div>
+          <div class="feature">6–12 month tactical action plans</div>
+        </div>
+      </div>
+      <div class="service-card">
+        <h3>🧾 Accounting Services</h3>
+        <p>Full accounting support and strategic tax planning for businesses.</p>
+        <div class="service-features">
+          <div class="feature">Bookkeeping and tax compliance</div>
+          <div class="feature">Strategic tax planning and auditing</div>
+          <div class="feature">Payroll and employee management</div>
+          <div class="feature">Financial analysis for decision making</div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <p>© 2025 Fractal Digital Hub</p>
+  <div id="lang-switcher" class="lang-switcher"></div>
+</footer>
+
+<script src="../js/main.js"></script>
+<script>
+  // Language Switcher Logic
+  (function(){
+    const switcher = document.getElementById('lang-switcher');
+    if(!switcher) return;
+    const path = window.location.pathname;
+    
+    // Links to English/Greek versions of the current page
+    let greekHref = path.replace('-en.html', '.html');
+    let engHref = path.includes('-en.html') ? path : path.replace('.html', '-en.html');
+    
+    switcher.innerHTML = `
+      <a href="${greekHref}" style="color:white;text-decoration:none;opacity:0.6">Ελληνικά</a> | 
+      <a href="${engHref}" style="color:var(--magenta);text-decoration:none;font-weight:bold">English</a>
+    `;
+  })();
+
+  // Mobile Menu Logic
+  const menuToggle = document.getElementById('menu-toggle');
+  const navMenu = document.getElementById('nav-menu');
+  if(menuToggle && navMenu) {
+    menuToggle.addEventListener('click', () => {
+      menuToggle.classList.toggle('active');
+      navMenu.classList.toggle('active');
+    });
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+  <meta charset="UTF-8">
+  <title>Contact | Fractal Digital Hub</title>
+  <meta name="description" content="Επικοινωνήστε μαζί μας για να μιλήσουμε για το επόμενο project σας.">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="preload" href="../videos/background.webm" as="video" type="video/webm">
+  <meta property="og:title" content="Contact | Fractal Digital Hub">
+  <meta property="og:description" content="Επικοινωνήστε για να αρχίσει το επόμενο project σας.">
+  <meta property="og:type" content="website">
+  <link rel="icon" href="../images/b2gift-logo.webp" type="image/webp">
+  
+  <style>
+    :root { --black: #0e0e0e; --white: #ffffff; --magenta: #e6007e; }
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Space Grotesk', sans-serif; }
+    body { background-color: var(--black); color: var(--white); }
+    .bg-video-wrapper { position: fixed; inset: 0; z-index: -1; overflow: hidden; }
+    .bg-video-wrapper video { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .bg-video-wrapper .bg-vignette { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,0.35), rgba(0,0,0,0.6)); pointer-events: none; }
+    
+    header { position: sticky; top: 0; display: flex; flex-direction: column; border-bottom: 1px solid #222; background: rgba(0,0,0,0.45); backdrop-filter: blur(8px); z-index: 50; }
+    .header-top { display: flex; justify-content: center; align-items: center; padding: 24px 50px; position: relative; }
+    .brand-name { display: flex; flex-direction: column; line-height: 1; text-align: center; }
+    .fractal { font-size: 24px; letter-spacing: 2px; font-weight: 700; }
+    .hub { font-size: 12px; letter-spacing: 3px; color: var(--magenta); margin-top: 5px; font-weight: 600; }
+    
+    .menu-toggle { position: absolute; right: 50px; display: none; flex-direction: column; gap: 5px; background: none; border: none; cursor: pointer; z-index: 51; transition: all .3s ease; }
+    .menu-line { width: 24px; height: 2px; background: var(--white); transition: all .3s cubic-bezier(0.34, 1.56, 0.64, 1); }
+    .menu-toggle.active .menu-line:nth-child(1) { transform: rotate(45deg) translate(10px, 10px); }
+    .menu-toggle.active .menu-line:nth-child(2) { opacity: 0; }
+    .menu-toggle.active .menu-line:nth-child(3) { transform: rotate(-45deg) translate(8px, -8px); }
+    
+    .nav-menu { display: flex; gap: 8px; align-items: center; justify-content: center; padding: 16px 50px; transition: all .3s ease; }
+    .nav-link { text-decoration: none; color: var(--white); font-size: 14px; padding: 10px 18px; transition: all .3s ease; border-bottom: 2px solid transparent; font-weight: 500; position: relative; }
+    .nav-link::after { content: ""; position: absolute; bottom: 0; left: 50%; width: 0; height: 2px; background: var(--magenta); transition: all .3s cubic-bezier(0.34, 1.56, 0.64, 1); transform: translateX(-50%); }
+    .nav-link:hover { color: var(--magenta); }
+    .nav-link:hover::after { width: calc(100% - 36px); }
+    .nav-link.cta { border: 1.5px solid var(--magenta); border-radius: 24px; background: rgba(230,0,126,0.05); padding: 10px 22px; transition: all .3s cubic-bezier(0.34, 1.56, 0.64, 1); }
+    .nav-link.cta:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(230,0,126,0.15); background: rgba(230,0,126,0.1); }
+    
+    section { padding: 100px 50px; max-width: 1400px; margin: 0 auto; }
+    
+    .page-header { text-align: center; padding-top: 80px; padding-bottom: 60px; }
+    .page-header h1 { font-size: 56px; margin-bottom: 16px; animation: fadeInDown .6s ease-out; }
+    .page-header p { font-size: 18px; opacity: 0.8; max-width: 600px; margin: 0 auto; animation: fadeInUp .7s ease-out .15s both; }
+    
+    @keyframes fadeInDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    
+    .contact { text-align: center; }
+    .contact h1 { font-size: 48px; margin-bottom: 12px; animation: fadeInDown .6s ease-out; }
+    .contact p { font-size: 16px; opacity: 0.7; margin-bottom: 60px; animation: fadeInUp .7s ease-out .1s both; }
+    
+    .form-container { max-width: 600px; margin: 0 auto; animation: scaleInUp .7s ease-out .2s both; background: rgba(0,0,0,0.3); border: 1px solid rgba(230,0,126,0.1); border-radius: 16px; padding: 50px 40px; backdrop-filter: blur(8px); }
+    @keyframes scaleInUp { from { opacity: 0; transform: scale(0.9) translateY(20px); } to { opacity: 1; transform: scale(1) translateY(0); } }
+    
+    form { display: flex; flex-direction: column; gap: 24px; }
+    
+    .form-row { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+    .form-row.full { grid-template-columns: 1fr; }
+    
+    .form-group { position: relative; }
+    .form-group label { display: block; font-size: 12px; margin-bottom: 10px; opacity: 0.8; text-transform: uppercase; letter-spacing: 1.5px; font-weight: 700; color: rgba(230,0,126,1); }
+    
+    input, textarea, select { width: 100%; background: rgba(255,255,255,0.03); border: 2px solid rgba(255,255,255,0.06); padding: 14px 18px; color: var(--white); font-size: 15px; border-radius: 10px; transition: all .3s cubic-bezier(0.34, 1.56, 0.64, 1); font-family: inherit; }
+    input::placeholder, textarea::placeholder { color: rgba(255,255,255,0.25); }
+    input:hover, textarea:hover, select:hover { border-color: rgba(230,0,126,0.2); background: rgba(255,255,255,0.04); }
+    input:focus, textarea:focus, select:focus { outline: none; background: rgba(255,255,255,0.06); border-color: var(--magenta); box-shadow: 0 0 0 4px rgba(230,0,126,0.15), inset 0 0 20px rgba(230,0,126,0.05); }
+    
+    textarea { resize: vertical; min-height: 140px; }
+    
+    select { cursor: pointer; appearance: none; padding-right: 40px; background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="%23e6007e"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" /></svg>'); background-repeat: no-repeat; background-position: right 12px center; background-size: 20px; padding-right: 40px; }
+    
+    button { background: linear-gradient(135deg, var(--magenta) 0%, rgba(230,0,126,0.8) 100%); color: #000; border: none; padding: 16px 40px; border-radius: 12px; font-size: 15px; font-weight: 700; letter-spacing: 1px; cursor: pointer; transition: all .3s cubic-bezier(0.34, 1.56, 0.64, 1); box-shadow: 0 8px 24px rgba(230,0,126,0.25); position: relative; overflow: hidden; text-transform: uppercase; }
+    button::before { content: ""; position: absolute; inset: 0; background: rgba(255,255,255,0.2); transform: translateX(-100%); transition: transform .4s ease; }
+    button:hover::before { transform: translateX(100%); }
+    button:hover { transform: translateY(-4px); box-shadow: 0 16px 48px rgba(230,0,126,0.35); }
+    button:active { transform: translateY(-2px); }
+    button:disabled { opacity: 0.5; cursor: not-allowed; }
+    
+    .form-info { text-align: center; margin-top: 32px; padding-top: 24px; border-top: 1px solid rgba(255,255,255,0.1); }
+    .form-info p { font-size: 13px; opacity: 0.6; }
+    
+    .form-success { display: none; background: rgba(76,175,80,0.1); border: 2px solid rgba(76,175,80,0.3); border-radius: 12px; padding: 20px; margin-bottom: 24px; text-align: center; animation: slideInDown .4s ease-out; }
+    .form-success.show { display: block; }
+    .form-error { display: none; background: rgba(244,67,54,0.1); border: 2px solid rgba(244,67,54,0.3); border-radius: 12px; padding: 20px; margin-bottom: 24px; text-align: center; animation: slideInDown .4s ease-out; color: #ff6b6b; }
+    .form-error.show { display: block; }
+    @keyframes slideInDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+    
+    .skip-link { position: absolute; left: 12px; top: 12px; padding: 8px 12px; background: #000; color: var(--white); border: 1px solid rgba(255,255,255,0.06); transform: translateY(-120%); transition: transform .3s cubic-bezier(0.34, 1.56, 0.64, 1); z-index: 999; }
+    .skip-link:focus { transform: translateY(0); }
+    a:focus-visible { outline: 3px solid var(--magenta); outline-offset: 3px; transition: outline .2s ease; }
+    
+    .site-footer { background: #000; border-top: 1px solid #222; padding: 40px 50px; text-align: center; color: rgba(255,255,255,0.6); font-size: 14px; }
+    
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; } }
+    
+    @media (max-width: 768px) { 
+      header { flex-direction: column; }
+      .header-top { padding: 16px 24px; }
+      .menu-toggle { display: flex; right: 24px; }
+      .nav-menu { position: fixed; top: 65px; left: 0; right: 0; flex-direction: column; background: rgba(0,0,0,0.95); backdrop-filter: blur(8px); padding: 20px; gap: 10px; max-height: 0; overflow: hidden; transition: all .35s cubic-bezier(0.34, 1.56, 0.64, 1); justify-content: flex-start; }
+      .nav-menu.active { max-height: 360px; }
+      .nav-link { width: 100%; padding: 14px 16px; text-align: center; transition: all .3s ease; }
+      .page-header { padding-top: 60px; }
+      .page-header h1 { font-size: 36px; }
+      section { padding: 60px 24px; }
+      .form-container { padding: 40px 24px; }
+      .form-row { grid-template-columns: 1fr; }
+      .site-footer { padding: 30px 24px; }
+    }
+  </style>
+  
+  <link rel="stylesheet" href="../css/style.css" media="print" onload="this.media='all'">
+</head>
+<body>
+
+  <a class="skip-link" href="#main">Μετάβασή στο περιεχόμενο</a>
+
+<div class="bg-video-wrapper">
+  <video id="bg-video" autoplay muted loop playsinline>
+    <source src="../videos/background.webm" type="video/webm">
+    <source src="../videos/background.mp4" type="video/mp4">
+  </video>
+  <div class="bg-vignette"></div>
+</div>
+
+<header>
+  <div class="header-top">
+    <div class="brand-name">
+      <span class="fractal">FRACTAL</span>
+      <span class="hub">DIGITAL HUB</span>
+    </div>
+    <button class="menu-toggle" id="menu-toggle" aria-label="Toggle menu" aria-expanded="false">
+      <span class="menu-line"></span>
+      <span class="menu-line"></span>
+      <span class="menu-line"></span>
+    </button>
+  </div>
+  
+  <nav class="nav-menu" id="nav-menu">
+    <a href="../index.html" class="nav-link">Home</a>
+    <a href="services.html" class="nav-link">Services</a>
+    <a href="portfolio.html" class="nav-link">Portfolio</a>
+    <a href="contact.html" aria-current="page" class="nav-link cta">Contact</a>
+  </nav>
+</header>
+
+<main id="main">
+  <section class="contact">
+    <h1>Επικοινωνία</h1>
+    <p>Πες μας για το project σου και θα ξεκινήσουμε</p>
+    
+    <div class="form-container">
+      <div class="form-success" id="form-success">
+        <p>✓ Ευχαριστούμε! Θα επικοινωνήσουμε σύντομα.</p>
+      </div>
+      <div class="form-error" id="form-error">
+        <p>Υπήρξε κάποιο σφάλμα. Προσπάθησε ξανά.</p>
+      </div>
+      <form id="contact-form">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="name">Όνομα *</label>
+            <input type="text" id="name" name="name" placeholder="Το όνομά σου" required>
+          </div>
+          <div class="form-group">
+            <label for="company">Εταιρία / Δραστηριότητα</label>
+            <input type="text" id="company" name="company" placeholder="Η εταιρία σου">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="email">Email *</label>
+          <input type="email" id="email" name="email" placeholder="example@domain.com" required>
+        </div>
+
+        <div class="form-group">
+          <label for="phone">Τηλέφωνο</label>
+          <input type="tel" id="phone" name="phone" placeholder="+30 6XX XXX XXXX">
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="project-type">Τύπος Project</label>
+            <select id="project-type" name="project-type">
+              <option value="">— Επέλεξε ένα —</option>
+              <option value="website">Website</option>
+              <option value="ecommerce">E-Commerce</option>
+              <option value="branding">Branding</option>
+              <option value="marketing">Marketing</option>
+              <option value="other">Άλλο</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="budget">Budget</label>
+            <select id="budget" name="budget">
+              <option value="">— Επέλεξε ένα —</option>
+              <option value="under-3k">Κάτω από €3,000</option>
+              <option value="3-7k">€3,000 - €7,000</option>
+              <option value="7-15k">€7,000 - €15,000</option>
+              <option value="15k+">€15,000+</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group form-row full">
+          <label for="message">Μήνυμα *</label>
+          <textarea id="message" name="message" placeholder="Πες μας λεπτομέρειες για το project σου, τι θέλεις να πετύχεις, και τι είναι σημαντικό για σας..." required></textarea>
+        </div>
+
+        <button type="submit">Στείλε το μήνυμα</button>
+
+        <div class="form-info">
+          <p>Θα επικοινωνήσουμε εντός 24 ωρών για να συζητήσουμε το project σου.</p>
+        </div>
+      </form>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <p>© 2025 Fractal Digital Hub</p>
+  <div id="lang-switcher" class="lang-switcher"></div>
+</footer>
+
+<script src="../js/main.js"></script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('contact-form');
+    const successMsg = document.getElementById('form-success');
+    const errorMsg = document.getElementById('form-error');
+
+    if (form) {
+      form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        // Hide previous messages
+        successMsg?.classList.remove('show');
+        errorMsg?.classList.remove('show');
+        
+        // Collect form data
+        const formData = new FormData(form);
+        const data = {
+          name: formData.get('name'),
+          company: formData.get('company'),
+          email: formData.get('email'),
+          phone: formData.get('phone'),
+          projectType: formData.get('project-type'),
+          budget: formData.get('budget'),
+          message: formData.get('message')
+        };
+        
+        // Send to your backend (replace with your endpoint)
+        fetch('/api/contact', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
+        })
+        .then(response => {
+          if (response.ok) {
+            successMsg?.classList.add('show');
+            form.reset();
+            setTimeout(() => successMsg?.classList.remove('show'), 5000);
+          } else {
+            throw new Error('Form submission failed');
+          }
+        })
+        .catch(error => {
+          errorMsg?.classList.add('show');
+          console.error('Error:', error);
+          setTimeout(() => errorMsg?.classList.remove('show'), 5000);
+        });
+      });
+    }
+  });
+</script>
+
+<script>
+  (function(){
+    const isEn = window.location.pathname.includes('-en.html');
+    document.querySelectorAll('a[href$="portfolio.html"]').forEach(a=>{
+      if(isEn) a.href = a.href.replace('portfolio.html','portfolio-en.html');
+    });
+    const switcher = document.getElementById('lang-switcher');
+    if(!switcher) return;
+    const url = new URL(window.location.href);
+    const path = url.pathname;
+    const dir = path.substring(0, path.lastIndexOf('/') + 1);
+    let greekHref, engHref;
+    if(path.endsWith('-en.html')){
+        engHref = path;
+        greekHref = path.replace('-en.html','.html');
+    } else {
+        greekHref = path || dir + 'index.html';
+        engHref = path.replace('.html','-en.html');
+    }
+    if(!greekHref) greekHref = dir + 'index.html';
+    if(!engHref) engHref = dir + 'index-en.html';
+    switcher.innerHTML = '<a href="'+greekHref+'">Ελληνικά</a> | <a href="'+engHref+'">English</a>';
+  })();
+</script>
+</body>
+</html>

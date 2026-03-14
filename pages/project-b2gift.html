@@ -1,0 +1,202 @@
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>B2Gift Case Study | Fractal Digital Hub</title>
+  <meta name="description" content="Discover how we built the B2Gift e-commerce platform using React, Node.js, and Stripe.">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="preload" href="../videos/background.webm" as="video" type="video/webm">
+  <link rel="icon" href="../images/b2gift-logo.webp" type="image/webp">
+  
+  <style>
+    :root { --black: #0e0e0e; --white: #ffffff; --magenta: #e6007e; }
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Space Grotesk', sans-serif; }
+    body { background-color: var(--black); color: var(--white); }
+    .bg-video-wrapper { position: fixed; inset: 0; z-index: -1; overflow: hidden; }
+    .bg-video-wrapper video { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .bg-video-wrapper .bg-vignette { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,0.35), rgba(0,0,0,0.6)); pointer-events: none; }
+    
+    header { position: sticky; top: 0; display: flex; flex-direction: column; border-bottom: 1px solid #222; background: rgba(0,0,0,0.45); backdrop-filter: blur(8px); z-index: 50; }
+    .header-top { display: flex; justify-content: center; align-items: center; padding: 24px 50px; position: relative; }
+    .brand-name { display: flex; flex-direction: column; line-height: 1; text-align: center; }
+    .fractal { font-size: 24px; letter-spacing: 2px; font-weight: 700; }
+    .hub { font-size: 12px; letter-spacing: 3px; color: var(--magenta); margin-top: 5px; font-weight: 600; }
+    
+    .menu-toggle { position: absolute; right: 50px; display: none; flex-direction: column; gap: 5px; background: none; border: none; cursor: pointer; z-index: 51; }
+    .menu-line { width: 24px; height: 2px; background: var(--white); transition: all .3s cubic-bezier(0.34, 1.56, 0.64, 1); }
+    .menu-toggle.active .menu-line:nth-child(1) { transform: rotate(45deg) translate(10px, 10px); }
+    .menu-toggle.active .menu-line:nth-child(2) { opacity: 0; }
+    .menu-toggle.active .menu-line:nth-child(3) { transform: rotate(-45deg) translate(8px, -8px); }
+    
+    .nav-menu { display: flex; gap: 8px; align-items: center; justify-content: center; padding: 16px 50px; }
+    .nav-link { text-decoration: none; color: var(--white); font-size: 14px; padding: 10px 18px; transition: all .3s ease; border-bottom: 2px solid transparent; font-weight: 500; position: relative; }
+    .nav-link::after { content: ""; position: absolute; bottom: 0; left: 50%; width: 0; height: 2px; background: var(--magenta); transition: all .3s cubic-bezier(0.34, 1.56, 0.64, 1); transform: translateX(-50%); }
+    .nav-link:hover { color: var(--magenta); }
+    .nav-link:hover::after { width: calc(100% - 36px); }
+    .nav-link.cta { border: 1.5px solid var(--magenta); border-radius: 24px; background: rgba(230,0,126,0.05); padding: 10px 22px; transition: all .3s cubic-bezier(0.34, 1.56, 0.64, 1); }
+    .nav-link.cta:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(230,0,126,0.15); }
+    
+    section { max-width: 1000px; margin: 0 auto; padding: 80px 50px; }
+    
+    .case-hero { text-align: center; padding-top: 100px; }
+    .case-hero h1 { font-size: 64px; margin-bottom: 20px; animation: fadeInDown .6s ease-out; }
+    .case-type { font-size: 14px; letter-spacing: 2px; color: var(--magenta); text-transform: uppercase; margin-bottom: 16px; animation: fadeInUp .6s ease-out .1s both; }
+    .case-description { font-size: 18px; opacity: 0.8; max-width: 700px; margin: 0 auto 60px; animation: fadeInUp .6s ease-out .15s both; line-height: 1.6; }
+    
+    .case-image { width: 100%; max-height: 500px; background: linear-gradient(135deg, rgba(230,0,126,0.1), rgba(230,0,126,0.02)); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 80px; animation: scaleInUp .7s ease-out .2s both; overflow: hidden; }
+    .case-image img { max-width: 100%; max-height: 100%; object-fit: contain; padding: 40px; }
+    
+    @keyframes fadeInDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes scaleInUp { from { opacity: 0; transform: scale(0.9) translateY(30px); } to { opacity: 1; transform: scale(1) translateY(0); } }
+    
+    .case-content h2 { font-size: 32px; margin: 60px 0 24px; color: var(--magenta); }
+    .case-content p { font-size: 16px; opacity: 0.85; line-height: 1.8; margin-bottom: 20px; }
+    
+    .metrics { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin: 60px 0; }
+    .metric { background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.08); padding: 32px; border-radius: 12px; text-align: center; }
+    .metric-value { font-size: 42px; font-weight: 700; color: var(--magenta); }
+    .metric-label { font-size: 13px; color: rgba(255,255,255,0.7); margin-top: 12px; }
+    
+    .tech-stack { display: flex; flex-wrap: wrap; gap: 12px; margin: 40px 0; }
+    .tech-tag { background: rgba(230,0,126,0.1); border: 1px solid rgba(230,0,126,0.2); padding: 8px 16px; border-radius: 20px; font-size: 13px; color: var(--magenta); }
+    
+    .cta-section { text-align: center; padding: 60px 0; margin-top: 80px; border-top: 1px solid rgba(255,255,255,0.08); }
+    .cta-btn { display: inline-block; border-radius: 28px; padding: 16px 40px; border: 1px solid var(--magenta); color: #000; background: var(--magenta); box-shadow: 0 6px 18px rgba(230,0,126,0.14); text-decoration: none; font-weight: 600; transition: all .3s cubic-bezier(0.34, 1.56, 0.64, 1); }
+    .cta-btn:hover { transform: translateY(-4px); box-shadow: 0 12px 40px rgba(230,0,126,0.25); }
+    
+    .site-footer { background: #000; border-top: 1px solid #222; padding: 40px 50px; text-align: center; color: rgba(255,255,255,0.6); font-size: 14px; }
+    
+    @media (max-width: 768px) { 
+      header .header-top { padding: 16px 24px; }
+      .menu-toggle { display: flex; right: 24px; }
+      section { padding: 60px 24px; }
+      .case-hero h1 { font-size: 36px; }
+      .metrics { grid-template-columns: 1fr; }
+      .case-image { margin-bottom: 40px; }
+    }
+  </style>
+  
+  <link rel="stylesheet" href="../css/style.css" media="print" onload="this.media='all'">
+</head>
+<body>
+
+<div class="bg-video-wrapper">
+  <video id="bg-video" autoplay muted loop playsinline>
+    <source src="../videos/background.webm" type="video/webm">
+    <source src="../videos/background.mp4" type="video/mp4">
+  </video>
+  <div class="bg-vignette"></div>
+</div>
+
+<header>
+  <div class="header-top">
+    <div class="brand-name">
+      <span class="fractal">FRACTAL</span>
+      <span class="hub">DIGITAL HUB</span>
+    </div>
+    <button class="menu-toggle" id="menu-toggle" aria-label="Toggle menu" aria-expanded="false">
+      <span class="menu-line"></span>
+      <span class="menu-line"></span>
+      <span class="menu-line"></span>
+    </button>
+  </div>
+  
+  <nav class="nav-menu" id="nav-menu">
+    <a href="../index-en.html" class="nav-link">Home</a>
+    <a href="services-en.html" class="nav-link">Services</a>
+    <a href="portfolio-en.html" class="nav-link">Portfolio</a>
+    <a href="contact-en.html" class="nav-link cta">Contact</a>
+  </nav>
+</header>
+
+<main id="main">
+  <section class="case-hero">
+    <div class="case-type">E-Commerce · Website Development</div>
+    <h1>B2Gift</h1>
+    <p class="case-description">
+      We developed a comprehensive e-commerce platform with custom fulfillment integration, 
+      tripling sales and significantly enhancing the user experience.
+    </p>
+  </section>
+  
+  <div class="case-image">
+    <img src="../images/b2gift-logo.webp" alt="B2Gift Platform">
+  </div>
+  
+  <section class="case-content">
+    <h2>The Problem</h2>
+    <p>
+      B2Gift had outgrown their legacy platform. They required a modern, 
+      high-speed e-commerce site capable of supporting multiple distributors and handling high traffic volumes.
+    </p>
+    
+    <h2>The Solution</h2>
+    <p>
+      Prioritizing performance, we engineered a React-based platform with a Node.js backend, 
+      Stripe payments integration, and real-time inventory management. The site achieves a load time of &lt;1s 
+      and supports thousands of concurrent users.
+    </p>
+    
+    <div class="tech-stack">
+      <span class="tech-tag">React.js</span>
+      <span class="tech-tag">Node.js</span>
+      <span class="tech-tag">PostgreSQL</span>
+      <span class="tech-tag">Stripe API</span>
+      <span class="tech-tag">AWS S3</span>
+      <span class="tech-tag">Cloudflare CDN</span>
+    </div>
+    
+    <h2>The Results</h2>
+    <div class="metrics">
+      <div class="metric">
+        <div class="metric-value">3x</div>
+        <div class="metric-label">Sales Increase</div>
+      </div>
+      <div class="metric">
+        <div class="metric-value">0.8s</div>
+        <div class="metric-label">Load Time</div>
+      </div>
+      <div class="metric">
+        <div class="metric-value">98%</div>
+        <div class="metric-label">Lighthouse Score</div>
+      </div>
+    </div>
+    
+    <p>
+      Following the launch, B2Gift experienced a 300% increase in sales within the first quarter. 
+      The cart abandonment rate on mobile devices decreased by 40%.
+    </p>
+  </section>
+  
+  <section class="cta-section">
+    <h2>Ready for your next project?</h2>
+    <p style="opacity: 0.8; margin-bottom: 30px;">Contact us to discuss how we can help your business grow.</p>
+    <a href="contact-en.html" class="cta-btn">Start your project</a>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <p>© 2025 Fractal Digital Hub</p>
+  <div id="lang-switcher" class="lang-switcher"></div>
+</footer>
+
+<script src="../js/main.js"></script>
+<script>
+  (function(){
+    const switcher = document.getElementById('lang-switcher');
+    if(!switcher) return;
+    const path = window.location.pathname;
+    const dir = path.substring(0, path.lastIndexOf('/') + 1);
+    
+    let greekHref = path.replace('-en.html','.html');
+    let engHref = path.includes('-en.html') ? path : path.replace('.html','-en.html');
+
+    switcher.innerHTML = '<a href="'+greekHref+'">Ελληνικά</a> | <a href="'+engHref+'" style="color:var(--magenta);font-weight:bold;">English</a>';
+  })();
+</script>
+</body>
+</html>

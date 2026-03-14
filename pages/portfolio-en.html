@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Portfolio | Fractal Digital Hub</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root { --black: #0e0e0e; --white: #ffffff; --magenta: #e6007e; }
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Space Grotesk', sans-serif; }
+    body { background-color: var(--black); color: var(--white); }
+    
+    header { position: sticky; top: 0; display: flex; flex-direction: column; border-bottom: 1px solid #222; background: rgba(0,0,0,0.8); backdrop-filter: blur(8px); z-index: 50; }
+    .header-top { display: flex; justify-content: center; align-items: center; padding: 20px; }
+    .brand-name { text-align: center; display: flex; flex-direction: column; }
+    .fractal { font-size: 20px; font-weight: 700; letter-spacing: 2px; }
+    .hub { font-size: 10px; color: var(--magenta); font-weight: 600; letter-spacing: 2px; }
+
+    .nav-menu { display: flex; gap: 15px; justify-content: center; padding: 15px; }
+    .nav-link { color: #fff; text-decoration: none; font-size: 13px; text-transform: uppercase; font-weight: 500; }
+    .nav-link.cta { border: 1px solid var(--magenta); padding: 5px 15px; border-radius: 20px; }
+
+    .portfolio-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 30px; padding: 80px 50px; max-width: 1400px; margin: 0 auto; }
+    .project-card { background: #151515; border-radius: 15px; overflow: hidden; transition: transform 0.4s ease; text-decoration: none; color: white; border: 1px solid #222; }
+    .project-card:hover { transform: translateY(-10px); border-color: var(--magenta); }
+    .project-img { width: 100%; height: 250px; background: #222; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+    .project-img img { width: 60%; transition: transform 0.5s ease; }
+    .project-info { padding: 25px; }
+    .project-category { font-size: 12px; color: var(--magenta); text-transform: uppercase; margin-bottom: 10px; display: block; }
+    .project-title { font-size: 24px; font-weight: 700; }
+
+    .site-footer { padding: 40px; text-align: center; border-top: 1px solid #222; }
+    .lang-switcher a { color: white; text-decoration: none; font-size: 14px; margin: 0 10px; }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="header-top">
+    <div class="brand-name"><span class="fractal">FRACTAL</span><span class="hub">DIGITAL HUB</span></div>
+  </div>
+  <nav class="nav-menu">
+    <a href="../index-en.html" class="nav-link">Home</a>
+    <a href="services-en.html" class="nav-link">Services</a>
+    <a href="portfolio-en.html" class="nav-link">Portfolio</a>
+    <a href="contact-en.html" class="nav-link cta">Contact</a>
+  </nav>
+</header>
+
+<main>
+  <section style="text-align: center; padding-top: 60px;">
+    <h1 style="font-size: 48px;">Our Projects</h1>
+    <p style="opacity: 0.6;">Selected works in branding and digital design.</p>
+  </section>
+
+  <div class="portfolio-grid">
+    <a href="demiacc-en.html" class="project-card">
+      <div class="project-img">
+        <img src="../images/demiacc-logo.webp" alt="Demiacc Logo">
+      </div>
+      <div class="project-info">
+        <span class="project-category">Branding & Web</span>
+        <h3 class="project-title">Demiacc</h3>
+      </div>
+    </a>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <p>© 2025 Fractal Digital Hub</p>
+  <div id="lang-switcher" class="lang-switcher">
+    <a href="portfolio.html">Ελληνικά</a> | <a href="portfolio-en.html" style="color:var(--magenta); font-weight:bold;">English</a>
+  </div>
+</footer>
+
+</body>
+</html>

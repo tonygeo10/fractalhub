@@ -1,0 +1,105 @@
+
+ * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f766e 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    color: #1f2937;
+}
+
+.team-section {
+    width: 100%;
+    padding: 60px 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.team-header {
+    text-align: center;
+    margin-bottom: 60px;
+    animation: slideDown 0.9s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.team-header h1 {
+    font-size: 3.5em;
+    background: linear-gradient(135deg, #ffffff 0%, #e5e7eb 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: 800;
+}
+
+.carousel-container {
+    position: relative;
+    width: 100%;
+    max-width: 950px;
+}
+
+.carousel-wrapper {
+    overflow: hidden;
+    border-radius: 24px;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+    background: rgba(255, 255, 255, 0.95);
+}
+
+.carousel-inner {
+    display: flex;
+    transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.carousel-item {
+    flex: 0 0 100%;
+    padding: 50px 45px;
+    display: flex;
+    justify-content: center;
+}
+
+.team-card {
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    gap: 45px;
+    width: 100%;
+}
+
+.team-image {
+    width: 100%;
+    height: 360px;
+    border-radius: 16px;
+    object-fit: cover;
+    border: 3px solid #f0f4f8;
+}
+
+.team-name { font-size: 2.2em; font-weight: 800; margin-bottom: 10px; }
+.team-role { color: #0f766e; text-transform: uppercase; font-weight: 700; margin-bottom: 24px; }
+.team-bio { column-count: 2; column-gap: 28px; line-height: 1.8; color: #4b5563; }
+
+/* Controls & Indicators */
+.carousel-controls { display: flex; gap: 24px; margin-top: 48px; }
+.carousel-btn { 
+    width: 56px; height: 56px; border-radius: 50%; border: none;
+    background: #0f766e; color: white; cursor: pointer;
+}
+
+.dot { width: 12px; height: 12px; background: #cbd5e1; border-radius: 50%; cursor: pointer; transition: 0.4s; }
+.dot.active { background: #0f766e; width: 32px; border-radius: 6px; }
+
+/* Animations */
+@keyframes slideDown {
+    from { opacity: 0; transform: translateY(-40px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 768px) {
+    .team-card { grid-template-columns: 1fr; text-align: center; }
+    .team-bio { column-count: 1; }
+}
